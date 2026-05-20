@@ -30,7 +30,7 @@ jobs:
         run: |
           cat > platformio_override.ini << 'EOF'
           [env:esp32-c3-dev_custom]
-          extends = env:esp32-c3-dev
+          extends = env:esp32c3dev
           custom_usermods = artnet_hires_pwm
           EOF
 
