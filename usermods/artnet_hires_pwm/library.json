@@ -1,0 +1,8 @@
+{
+  "name": "artnet_hires_pwm",
+  "version": "1.0.0",
+  "description": "ArtNet Hi-Res PWM Dimmer usermod for WLED (up to 4 channels, 8-14 bit, configurable frequency)",
+  "keywords": ["wled", "artnet", "pwm", "dimmer"],
+  "frameworks": "arduino",
+  "platforms": ["espressif32"]
+}
