@@ -45,13 +45,13 @@ private:
   void detachChannel(uint8_t ch) {
     if (pin[ch] >= 0) {
       ledcDetachPin(pin[ch]);
-      pinManager.deallocatePin(pin[ch], PinOwner::UM_Unspecified);
+      PinManager::deallocatePin(pin[ch], PinOwner::UM_Unspecified);
     }
   }
 
   bool setupChannel(uint8_t ch) {
     if (pin[ch] < 0) return true;
-    if (!pinManager.allocatePin(pin[ch], true, PinOwner::UM_Unspecified)) {
+    if (!PinManager::allocatePin(pin[ch], true, PinOwner::UM_Unspecified)) {
       DEBUG_PRINTF("[HiresPWM] Pin %d belegt!\n", pin[ch]);
       return false;
     }
