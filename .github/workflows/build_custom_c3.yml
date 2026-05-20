@@ -1,0 +1,51 @@
+name: Build WLED ESP32-C3 Custom
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:  # auch manuell startbar per Knopfdruck
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout WLED
+        uses: actions/checkout@v4
+
+      - name: Python & PlatformIO installieren
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: PlatformIO installieren
+        run: pip install platformio
+
+      - name: Node.js installieren (für Web UI Build)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: platformio_override.ini erstellen
+        run: |
+          cat > platformio_override.ini << 'EOF'
+          [env:esp32-c3-dev_custom]
+          extends = env:esp32-c3-dev
+          custom_usermods = artnet_hires_pwm
+          EOF
+
+      - name: Build
+        run: pio run -e esp32-c3-dev_custom
+
+      - name: Binary umbenennen
+        run: |
+          mkdir -p artifacts
+          cp .pio/build/esp32-c3-dev_custom/firmware.bin \
+             artifacts/WLED_ESP32-C3_artnet-hires-pwm.bin
+
+      - name: Binary hochladen als Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WLED-ESP32-C3-artnet-hires-pwm
+          path: artifacts/WLED_ESP32-C3_artnet-hires-pwm.bin
+          retention-days: 30
